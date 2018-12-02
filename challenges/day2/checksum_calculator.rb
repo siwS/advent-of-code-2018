@@ -1,37 +1,26 @@
+require "../../challenges/common/input_reader"
+
 class ChecksumCalculator
 
-  def read_input
-    input = []
-    File.open("input", "r") do |f|
-      f.each_line do |line|
-        input << line
-      end
-    end
-    input
+  def initialize
+    @twos = 0
+    @threes = 0
   end
 
   def calculate_checksum
-    twos = 0
-    threes = 0
+    input = InputReader.read_lines_from_file
 
-    input = read_input
     input.each do |i|
-      chars = i.chars
-      found_twos, found_threes = find_combinations(chars)
-
-      twos +=1 if found_twos
-      threes += 1 if found_threes
+      find_combinations(i.chars)
     end
 
-    puts "Twos: #{twos}, threes: #{threes}. Result: #{twos * threes}"
+    puts "Twos: #{@twos}, threes: #{@threes}. Result: #{@twos * @threes}"
   end
 
-  def find_combinations(chars)
-    twos = false
-    threes = false
+  private def find_combinations(chars)
     letters = {}
-    chars.each do |char|
 
+    chars.each do |char|
       if letters[char] == nil
         letters[char] = 1
       else
@@ -39,17 +28,8 @@ class ChecksumCalculator
       end
     end
 
-    letters.each do |_, value|
-      if value == 2
-        twos = true
-      end
-
-      if value == 3
-        threes = true
-      end
-    end
-
-    [twos, threes]
+    @twos += 1 if letters.select { |_, value| value == 2 }.size > 0
+    @threes += 1 if letters.select { |_, value| value == 3 }.size > 0
   end
 
 end
