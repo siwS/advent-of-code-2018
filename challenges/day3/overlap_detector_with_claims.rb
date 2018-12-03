@@ -5,17 +5,26 @@ class OverlapDetectorWithClaims
   FABRIC_SIZE = 1000
 
   def initialize
-    @board = initialize_array
-    @claims = []
+    @fabric_array = initialize_array
+    @claims = {}
   end
 
   def detect_no_overlapped_claim
     input = InputReader.read_lines_from_file
-    @claims = (1..input.size).to_a
+    initialize_claims_hash(input.size)
+
     input.each do |line|
       process_line(line)
     end
-    puts @claims
+
+    claims_no_overlap = @claims.select { |_, y| y.zero? }
+    puts "Claim with no overlap: #{claims_no_overlap.keys[0]}"
+  end
+
+  private def initialize_claims_hash(input_size)
+    (1..input_size).each do |claim|
+      @claims[claim] = 0
+    end
   end
 
   private def process_line(line)
@@ -65,12 +74,15 @@ class OverlapDetectorWithClaims
     end
   end
 
+  # We need to mark as overlapped both the previous claim
+  # and the current one. This is why we always store the last one on the
+  # fabric square
   private def mark_for_claim(claim, i, j)
-    if @board[i][j] != 0
-      @claims.delete(@board[i][j])
-      @claims.delete(claim)
+    if @fabric_array[i][j] != 0
+      @claims[@fabric_array[i][j]] += 1
+      @claims[claim] += 1
     end
-    @board[i][j] = claim
+    @fabric_array[i][j] = claim
   end
 
 end
