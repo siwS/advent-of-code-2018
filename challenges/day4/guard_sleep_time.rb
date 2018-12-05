@@ -3,15 +3,15 @@ require 'date'
 class GuardSleepTime
   include Comparable
 
-  attr_accessor :time, :guard, :awakes
+  attr_accessor :time, :guard, :action
 
-  def initialize(time:, guard: nil, awakes:)
-    @time = time
+  def initialize(time:, guard: nil, action:)
+    @time = DateTime.parse(time)
     @guard = guard
-    @awakes = awakes
+    @action = action
   end
 
   def <=>(an_other)
-    DateTime.parse(time) <=> DateTime.parse(an_other.time)
+    time <=> an_other.time
   end
 end
