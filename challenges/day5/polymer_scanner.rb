@@ -4,12 +4,24 @@ class PolymerScanner
 
   attr_accessor :polymer_chars
 
-  def scan
-    @polymer_chars = InputReader.read_lines_from_file[0].chars
-    while find_reacting_units
-      puts @polymer_chars.size
+  def initialize(input: nil)
+    if input.nil?
+      @polymer_chars = InputReader.read_lines_from_file[0].chars
+    else
+      @polymer_chars = input
     end
+  end
 
+  def scan
+    remove_reacting_units
+  end
+
+  def remove_reacting_units
+    while find_reacting_units
+      #side effects haha
+    end
+    puts @polymer_chars.size
+    @polymer_chars.size
   end
 
   def find_reacting_units
