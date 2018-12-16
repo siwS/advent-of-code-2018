@@ -55,11 +55,9 @@ class SumOfThePartsWithWorkers
 
       if mins_passed >= @next_task[i] -1
         last_node.next_steps.each do |step|
-          next if already_traversed?(step)
-
-          if all_previous_steps_completed?(step, mins_passed)
-            @available << step
-          end
+          next if @all_traversed.include?(step)
+          next unless all_previous_steps_completed?(step, mins_passed)
+          @available << step
         end
         @available.sort!
       end
@@ -104,18 +102,14 @@ class SumOfThePartsWithWorkers
   def step_completed?(step, mins_passed)
     @traversed.each do |worker, nodes|
       if nodes.last == step
-        return true if @next_task[worker]-1 <= mins_passed
-      else if nodes.include?(step)
-             return true
-           end
-       end
+        return @next_task[worker]-1 <= mins_passed
+      else
+        return true if nodes.include?(step)
+      end
     end
     false
   end
 
-  def already_traversed?(step)
-    @all_traversed.include?(step)
-  end
 end
 
 c = SumOfThePartsWithWorkers.new
