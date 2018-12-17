@@ -10,7 +10,6 @@ class MarbleGame
   end
 
   def play
-    puts "New game..."
     current_marble = 0
     current_marble_index = 0
     current_player = 0
@@ -58,13 +57,8 @@ class MarbleGame
   end
 
   def print_score
-    #puts @marbles_array.join("-")
-    max = 0
-    @score.each do |key, value|
-      #puts "Elf: #{key} scored: #{value}"
-      max = value if value > max
-    end
-    puts "Winning score= #{max}"
+    key, value = @score.max_by { |k,v| v }
+    puts "Winning for elf=#{key} score= #{value}"
   end
 
   def increment_player(current_player)
