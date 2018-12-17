@@ -24,7 +24,7 @@ class ChronalChargeCalculator
   end
 
   def calculate
-    max, leftBound, rightBound, upBound, lowBound = 0, 0, 0, 0, 0
+    max, leftBound, upBound, lowBound = 0, 0, 0, 0
 
     (0..299).each do |left|
       temp = Array.new(300, 0)
@@ -38,7 +38,6 @@ class ChronalChargeCalculator
 
         max = result
         leftBound = left
-        rightBound = right
         upBound = currentUpBound
         lowBound = currentLowBound
       end
