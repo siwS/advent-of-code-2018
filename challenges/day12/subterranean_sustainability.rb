@@ -3,7 +3,7 @@ require "../../challenges/common/input_reader"
 class SubterraneanSustainability
 
   def initialize
-    @state = "......#.##.###.#.##...##..#..##....#.#.#.#.##....##..#..####..###.####.##.#..#...#..######.#.....#..##...#.......................".chars.to_a
+    @state = "......#.##.###.#.##...##..#..##....#.#.#.#.##....##..#..####..###.####.##.#..#...#..######.#.....#..##...#......................................................................................................................................".chars.to_a
     @combinations = {}
     input = InputReader.read_lines_from_file
     input.each do |line|
@@ -13,16 +13,11 @@ class SubterraneanSustainability
   end
 
   def calculate_year(year)
-    (0..year-1).each do
+    (0..year-1).each do |y|
       find_current_state
-      puts @state.join('')
-    end
 
-    sum = 0
-    @state.each_with_index do |state, index|
-      sum += index-6 if state == "#"
+      puts "#{y+1} #{@state.join("")} > Sum: #{calculate_current_sum}"
     end
-    puts sum
   end
 
   def find_current_state
@@ -39,7 +34,21 @@ class SubterraneanSustainability
     @state = new_state
   end
 
+  def calculate_current_sum
+    sum = 0
+    @state.each_with_index do |state, index|
+      sum += index-6 if state == "#"
+    end
+    sum
+  end
 
 end
 
-SubterraneanSustainability.new.calculate_year(20)
+SubterraneanSustainability.new.calculate_year(130)
+
+####
+# After year 100 we see that the pattern is the same only moving towards the right 1 index at a time.
+# Due to the size of the pattern (31 #) it increases 62 per iteration
+# Therefore for the rest 50000000000-10=49999999900 iterations it will increase steadily by 62.
+# The total count will be calculated by 6855+49999999900*62
+# And yay! We achieved sustainability with a stable rate
